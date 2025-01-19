@@ -278,6 +278,7 @@ const renderCurrentMultisigInfo = (): void => {
                 }
             }
 
+            console.log("test", lastOrder.type);
             if (lastOrder.type === 'executed') {
                 text += ` — <a href="https://tonviewer.com/transaction/${base64toHex(lastOrder.transactionHash)}" target="_blank">Tx Link</a>`;
             }
@@ -850,10 +851,10 @@ const orderTypes: OrderType[] = [
     },
 
     {
-        name: 'Change Jetton Admin',
+        name: 'Change SY, YT, PT or AMM Admin Address',
         fields: {
             jettonMinterAddress: {
-                name: 'Jetton Minter Address',
+                name: 'Minter Address',
                 type: 'Address'
             },
             newAdminAddress: {
@@ -1605,7 +1606,7 @@ $('#newMultisig_createButton').addEventListener('click', async () => {
         }, MULTISIG_CODE);
 
         const newMultisigAddress = newMultisig.address;
-        const amount = toNano('1').toString() // 1 TON
+        const amount = toNano('0.1').toString() // 1 TON
 
         const stateInitCell = beginCell();
         storeStateInit({
