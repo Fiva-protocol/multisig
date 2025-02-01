@@ -1,3 +1,5 @@
+import {crc32} from "../utils/crc32";
+
 export abstract class Op {
     static transfer = 0xf8a7ea5;
     static transfer_notification = 0x7362d09c;
@@ -32,4 +34,16 @@ export abstract class Errors {
     static discovery_fee_not_matched = 75;
 }
 
+export const ACROp = {
+    update_suspend: crc32('update_suspend'),
+    change_owner: crc32('change_owner'),
+    change_maintainer: crc32('change_maintainer'),
+    change_treasury: crc32('change_treasury'),
+    change_maturity: crc32('change_maturity'),
+    change_index_updater: crc32('change_index_updater'),
+    update_protocol_fee: crc32('update_protocol_fee'),
+    fee_payout: crc32('fee_payout'),
+    change_pool_address: crc32('change_pool_address'),
+    withdraw_pt_tons: crc32('withdraw_pt_tons'),
+};
 
