@@ -10,7 +10,7 @@ import {
     toNano
 } from '@ton/core';
 import {JettonWallet} from './JettonWallet';
-import {Op} from './JettonConstants';
+import {ACROp, Op} from './JettonConstants';
 import {assert} from "../utils/utils";
 
 export type JettonMinterContent = {
@@ -223,6 +223,15 @@ export class JettonMinter implements Contract {
             .storeAddress(newOwner)
             .endCell();
     }
+
+    static updateProtocolFeeMessage(newFee: bigint) {
+        return beginCell()
+            .storeUint(ACROp.update_protocol_fee, 32)
+            .storeUint(0, 64) // query_id
+            .storeUint(newFee, 32)
+            .endCell()
+    }
+
 
     static parseChangeAdmin(slice: Slice) {
         const op = slice.loadUint(32);

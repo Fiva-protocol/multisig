@@ -873,6 +873,28 @@ const orderTypes: OrderType[] = [
     },
 
     {
+        name: 'Update YT protocol fee (50000 -> 5%) ',
+        fields: {
+            jettonMinterAddress: {
+                name: 'YT Minter Address',
+                type: 'Address'
+            },
+            newProtocolFee: {
+                name: 'New Protocol Fee',
+                type: 'Jetton'
+            },
+        },
+        check: checkJettonMinterAdmin,
+        makeMessage: async (values): Promise<MakeMessageResult> => {
+            return {
+                toAddress: values.jettonMinterAddress,
+                tonAmount: DEFAULT_AMOUNT,
+                body: JettonMinter.updateProtocolFeeMessage(values.newProtocolFee)
+            };
+        }
+    },
+
+    {
         name: 'Claim Jetton Admin',
         fields: {
             jettonMinterAddress: {
