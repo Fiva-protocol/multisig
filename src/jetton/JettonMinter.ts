@@ -232,6 +232,18 @@ export class JettonMinter implements Contract {
             .endCell()
     }
 
+    static parseUpdateProtocolFee(slice: Slice) {
+        const op = slice.loadUint(32);
+        if (op !== ACROp.update_protocol_fee) throw new Error('Invalid op');
+        const queryId = slice.loadUint(64);
+        const newFee = slice.loadUint(32);
+        endParse(slice);
+        return {
+            queryId,
+            newFee
+        }
+    }
+
 
     static parseChangeAdmin(slice: Slice) {
         const op = slice.loadUint(32);
