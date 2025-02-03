@@ -166,6 +166,14 @@ export const checkMultisigOrder = async (
 
         try {
             const slice = cell.beginParse();
+            const parsed = JettonMinter.parseUpdateProtocolFee(slice);
+            return `Change Fee to ${parsed.newFee}`;
+        } catch (e) {
+        }
+
+
+        try {
+            const slice = cell.beginParse();
             const parsed = JettonMinter.parseClaimAdmin(slice);
             return `Claim Admin`;
         } catch (e) {
