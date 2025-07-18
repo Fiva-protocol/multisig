@@ -13,6 +13,7 @@ export abstract class Op {
     static mint = 0x642b7d07;
     static change_admin = 0x4840664f;
     static claim_admin = 0xfb88e119;
+    static change_max_total_supply = 0xc13bd793;
     static upgrade = 0x2508d66a;
     static call_to = 0x235caf52;
     static top_up = 0xd372158c;
