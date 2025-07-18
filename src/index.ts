@@ -895,6 +895,28 @@ const orderTypes: OrderType[] = [
     },
 
     {
+        name: 'Update max total supply',
+        fields: {
+            jettonMinterAddress: {
+                name: 'SY Minter Address',
+                type: 'Address'
+            },
+            newMaxTotalSupply: {
+                name: 'New max total supply (in units)',
+                type: 'Jetton'
+            },
+        },
+        check: checkJettonMinterAdmin,
+        makeMessage: async (values): Promise<MakeMessageResult> => {
+            return {
+                toAddress: values.jettonMinterAddress,
+                tonAmount: DEFAULT_AMOUNT,
+                body: JettonMinter.changeMaxTotalSupplyMessage(values.newMaxTotalSupply)
+            }
+        }
+    },
+
+    {
         name: 'Claim Jetton Admin',
         fields: {
             jettonMinterAddress: {

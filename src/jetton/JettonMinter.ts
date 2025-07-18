@@ -257,6 +257,26 @@ export class JettonMinter implements Contract {
         }
     }
 
+    static parseChangeMaxTotalSupply(slice: Slice) {
+        const op = slice.loadUint(32);
+        if (op !== Op.change_max_total_supply) throw new Error('Invalid op');
+        const queryId = slice.loadUint(64);
+        const newMaxTotalSupply = slice.loadCoins();
+        endParse(slice);
+        return {
+            queryId,
+            newMaxTotalSupply
+        }
+    }
+
+    static changeMaxTotalSupplyMessage(new_max_total_supply: bigint, query_id: bigint = 0n) {
+        return beginCell()
+            .storeUint(Op.change_max_total_supply, 32)
+            .storeUint(query_id, 64)
+            .storeCoins(new_max_total_supply)
+            .endCell();
+    }
+
     static claimAdminMessage(query_id: bigint = 0n) {
         return beginCell().storeUint(Op.claim_admin, 32).storeUint(query_id, 64).endCell();
     }

@@ -188,6 +188,13 @@ export const checkMultisigOrder = async (
 
         try {
             const slice = cell.beginParse();
+            const parsed = JettonMinter.parseChangeMaxTotalSupply(slice);
+            return `Update max total supply to ${parsed.newMaxTotalSupply}`;
+        } catch (e) {
+        }
+
+        try {
+            const slice = cell.beginParse();
             const parsed = JettonMinter.parseTransfer(slice);
             if (parsed.customPayload) throw new Error('Transfer custom payload not supported');
 
