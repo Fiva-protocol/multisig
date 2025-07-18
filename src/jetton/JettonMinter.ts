@@ -442,6 +442,29 @@ export class JettonMinter implements Contract {
         }
     }
 
+    static parseNftTransfer(slice: Slice) {
+        const op = slice.loadUint(32);
+        if (op !== Op.nft_transfer) throw new Error('Invalid op');
+        const queryId = slice.loadUint(64);
+        const nftAddress = slice.loadAddress();
+        const recipientAddress = slice.loadAddress();
+        endParse(slice);
+        return {
+            queryId,
+            nftAddress,
+            recipientAddress,
+        }
+    }
+
+    static transferNftMessage(nft_address: Address, recipient_address: Address, query_id: bigint = 0n) {
+        return beginCell()
+            .storeUint(Op.nft_transfer, 32)
+            .storeUint(query_id, 64)
+            .storeAddress(nft_address)
+            .storeAddress(recipient_address)
+            .endCell();
+    }
+
     async getWalletAddress(provider: ContractProvider, owner: Address): Promise<Address> {
         const res = await provider.get('get_wallet_address', [{
             type: 'slice',

@@ -244,6 +244,15 @@ export const checkMultisigOrder = async (
         } catch (e) {
         }
 
+        try {
+            const slice = cell.beginParse();
+            const parsed = JettonMinter.parseNftTransfer(slice);
+            const nftAddress = await formatAddressAndUrl(parsed.nftAddress, isTestnet)
+            const recipientAddress = await formatAddressAndUrl(parsed.recipientAddress, isTestnet)
+            return `Transfer nft ${nftAddress} to recipient: ${recipientAddress}`;
+        } catch (e) {
+        }
+
         throw new Error('Unsupported action')
 
     }

@@ -1060,6 +1060,32 @@ const orderTypes: OrderType[] = [
             }
         }
     },
+
+    {
+        name: 'Transfer nft ownership',
+        fields: {
+            jettonMinterAddress: {
+                name: 'SY Minter Address',
+                type: 'Address'
+            },
+            nftAddress: {
+                name: 'NFT item Address',
+                type: 'Address'
+            },
+            recipientAddress: {
+                name: 'NFT recipient address',
+                type: 'Address'
+            },
+        },
+        check: checkJettonMinterAdmin,
+        makeMessage: async (values): Promise<MakeMessageResult> => {
+            return {
+                toAddress: values.jettonMinterAddress,
+                tonAmount: DEFAULT_AMOUNT,
+                body: JettonMinter.transferNftMessage(values.nftAddress.address, values.recipientAddress.address)
+            }
+        }
+    },
 ]
 
 const getOrderTypesHTML = (): string => {
