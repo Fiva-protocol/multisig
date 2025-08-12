@@ -253,6 +253,13 @@ export const checkMultisigOrder = async (
         } catch (e) {
         }
 
+        try {
+            const slice = cell.beginParse();
+            const parsed = JettonMinter.parseWithdrawEvaa(slice);
+            return `Withdraw ${Number(parsed.amount) / 10 ** 6} USDT from EVAA`;
+        } catch (e) {
+        }
+
         throw new Error('Unsupported action')
 
     }

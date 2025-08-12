@@ -1086,6 +1086,28 @@ const orderTypes: OrderType[] = [
             }
         }
     },
+
+    {
+        name: 'Withdraw USDT from EVAA',
+        fields: {
+            jettonMinterAddress: {
+                name: 'Evaa SY Minter Address',
+                type: 'Address'
+            },
+            amount: {
+                name: 'USDT Amount (in units)',
+                type: 'Jetton'
+            },
+        },
+        check: checkJettonMinterAdmin,
+        makeMessage: async (values): Promise<MakeMessageResult> => {
+            return {
+                toAddress: values.jettonMinterAddress,
+                tonAmount: toNano(0.35),
+                body: JettonMinter.withdrawEvaaMessage(values.amount)
+            }
+        }
+    },
 ]
 
 const getOrderTypesHTML = (): string => {
