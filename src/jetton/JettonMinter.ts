@@ -465,6 +465,26 @@ export class JettonMinter implements Contract {
             .endCell();
     }
 
+    static parseWithdrawEvaa(slice: Slice) {
+        const op = slice.loadUint(32);
+        if (op !== Op.withdraw_evaa) throw new Error('Invalid op');
+        const queryId = slice.loadUint(64);
+        const amount = slice.loadCoins();
+        endParse(slice);
+        return {
+            queryId,
+            amount
+        }
+    }
+
+    static withdrawEvaaMessage(amount: bigint, query_id: bigint = 0n) {
+        return beginCell()
+            .storeUint(Op.withdraw_evaa, 32)
+            .storeUint(query_id, 64)
+            .storeCoins(amount)
+            .endCell();
+    }
+
     async getWalletAddress(provider: ContractProvider, owner: Address): Promise<Address> {
         const res = await provider.get('get_wallet_address', [{
             type: 'slice',
