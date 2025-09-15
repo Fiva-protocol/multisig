@@ -255,6 +255,15 @@ export const checkMultisigOrder = async (
 
         try {
             const slice = cell.beginParse();
+            const parsed = JettonMinter.parseWithdrawJettons(slice);
+            const jettonWalletAddress = await formatAddressAndUrl(parsed.jettonWalletAddress, isTestnet)
+            const recipientAddress = await formatAddressAndUrl(parsed.recipientAddress, isTestnet)
+            return `Withdraw ${parsed.amount} jettons (in units) from jetton wallet ${jettonWalletAddress} to recipient: ${recipientAddress}`;
+        } catch (e) {
+        }
+
+        try {
+            const slice = cell.beginParse();
             const parsed = JettonMinter.parseWithdrawEvaa(slice);
             return `Withdraw ${Number(parsed.amount) / 10 ** 6} USDT from EVAA`;
         } catch (e) {
