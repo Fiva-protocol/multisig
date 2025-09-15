@@ -1088,6 +1088,36 @@ const orderTypes: OrderType[] = [
     },
 
     {
+        name: 'Withdraw Jettons',
+        fields: {
+            jettonMinterAddress: {
+                name: 'Jetton Holder SC Address',
+                type: 'Address'
+            },
+            jettonWalletAddress: {
+                name: 'Jetton wallet address (from Jetton Holder SC)',
+                type: 'Address'
+            },
+            recipientAddress: {
+                name: 'Recipient Address',
+                type: 'Address'
+            },
+            amount: {
+                name: 'Jetton Amount (in units)',
+                type: 'Jetton'
+            },
+        },
+        check: checkJettonMinterAdmin,
+        makeMessage: async (values): Promise<MakeMessageResult> => {
+            return {
+                toAddress: values.jettonMinterAddress,
+                tonAmount: DEFAULT_AMOUNT,
+                body: JettonMinter.withdrawJettonsMessage(values.jettonWalletAddress.address, values.recipientAddress.address, values.amount)
+            }
+        }
+    },
+
+    {
         name: 'Withdraw USDT from EVAA',
         fields: {
             jettonMinterAddress: {

@@ -465,6 +465,33 @@ export class JettonMinter implements Contract {
             .endCell();
     }
 
+    static parseWithdrawJettons(slice: Slice) {
+        const op = slice.loadUint(32);
+        if (op !== Op.withdraw_jettons) throw new Error('Invalid op');
+        const queryId = slice.loadUint(64);
+        const jettonWalletAddress = slice.loadAddress();
+        const recipientAddress = slice.loadAddress();
+        const amount = slice.loadCoins();
+        endParse(slice);
+        return {
+            queryId,
+            jettonWalletAddress,
+            recipientAddress,
+            amount,
+        }
+    }
+
+    static withdrawJettonsMessage(jettonWallet: Address, recipient: Address, amount: bigint, query_id: bigint = 0n) {
+        return beginCell()
+            .storeUint(Op.withdraw_jettons, 32)
+            .storeUint(query_id, 64) // query_id
+            .storeAddress(jettonWallet)
+            .storeAddress(recipient)
+            .storeCoins(amount)
+            .storeMaybeRef(null)
+            .endCell();
+    }
+
     static parseWithdrawEvaa(slice: Slice) {
         const op = slice.loadUint(32);
         if (op !== Op.withdraw_evaa) throw new Error('Invalid op');
