@@ -1088,6 +1088,28 @@ const orderTypes: OrderType[] = [
     },
 
     {
+        name: 'Withdraw TON',
+        fields: {
+            jettonMinterAddress: {
+                name: 'Minter SC Address',
+                type: 'Address'
+            },
+            recipientAddress: {
+                name: 'Recipient Address',
+                type: 'Address'
+            },
+        },
+        check: checkJettonMinterAdmin,
+        makeMessage: async (values): Promise<MakeMessageResult> => {
+            return {
+                toAddress: values.jettonMinterAddress,
+                tonAmount: DEFAULT_AMOUNT,
+                body: JettonMinter.withdrawTonMessage(values.recipientAddress.address)
+            }
+        }
+    },
+
+    {
         name: 'Withdraw Jettons',
         fields: {
             jettonMinterAddress: {
