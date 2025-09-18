@@ -465,6 +465,26 @@ export class JettonMinter implements Contract {
             .endCell();
     }
 
+    static parseWithdrawTon(slice: Slice) {
+        const op = slice.loadUint(32);
+        if (op !== Op.withdraw_tons) throw new Error('Invalid op');
+        const queryId = slice.loadUint(64);
+        const recipientAddress = slice.loadAddress();
+        endParse(slice);
+        return {
+            queryId,
+            recipientAddress,
+        }
+    }
+
+    static withdrawTonMessage(recipient: Address, query_id: bigint = 0n) {
+        return beginCell()
+            .storeUint(Op.withdraw_tons, 32)
+            .storeUint(query_id, 64)
+            .storeAddress(recipient)
+            .endCell();
+    }
+
     static parseWithdrawJettons(slice: Slice) {
         const op = slice.loadUint(32);
         if (op !== Op.withdraw_jettons) throw new Error('Invalid op');

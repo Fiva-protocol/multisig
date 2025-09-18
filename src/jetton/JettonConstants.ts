@@ -20,6 +20,7 @@ export abstract class Op {
     static change_metadata_url = 0xcb862902;
     static set_status = 0xeed236d3;
     static nft_transfer = 0x5fcc3d14;
+    static withdraw_tons = 0x6d8e5e3c;
     static withdraw_jettons = 0x768a50b2;
     static withdraw_evaa = 0x854b73be;
 }
