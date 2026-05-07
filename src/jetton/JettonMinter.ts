@@ -513,12 +513,14 @@ export class JettonMinter implements Contract {
         const jettonWalletAddress = slice.loadAddress();
         const recipientAddress = slice.loadAddress();
         const amount = slice.loadCoins();
+        const customPayload = slice.loadMaybeRef();
         endParse(slice);
         return {
             queryId,
             jettonWalletAddress,
             recipientAddress,
             amount,
+            customPayload,
         }
     }
 
