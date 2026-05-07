@@ -244,6 +244,27 @@ export class JettonMinter implements Contract {
         }
     }
 
+    static updateSuspendMessage(isSuspend: boolean, query_id: bigint = 0n) {
+        return beginCell()
+            .storeUint(ACROp.update_suspend, 32)
+            .storeUint(query_id, 64)
+            .storeInt(isSuspend ? -1 : 0, 2)
+            .endCell();
+    }
+
+    static parseUpdateSuspend(slice: Slice) {
+        const op = slice.loadUint(32);
+        if (op !== ACROp.update_suspend) throw new Error('Invalid op');
+        const queryId = slice.loadUint(64);
+        const suspend = slice.loadInt(2);
+        if (suspend !== -1 && suspend !== 0) throw new Error('Invalid suspend value');
+        endParse(slice);
+        return {
+            queryId,
+            isSuspend: suspend === -1
+        }
+    }
+
 
     static parseChangeAdmin(slice: Slice) {
         const op = slice.loadUint(32);

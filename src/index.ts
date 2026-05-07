@@ -601,7 +601,7 @@ $('#order_approveButton').addEventListener('click', async () => {
 
 // NEW ORDER
 
-type FieldType = 'TON' | 'Jetton' | 'Address' | 'URL' | 'Status' | 'String';
+type FieldType = 'TON' | 'Jetton' | 'Address' | 'URL' | 'Status' | 'Boolean' | 'String';
 
 interface ValidatedValue {
     value?: any;
@@ -683,6 +683,15 @@ const validateValue = (fieldName: string, value: string, fieldType: FieldType): 
                 return makeValue(value);
             } else {
                 return makeError('Invalid status. Please use: ' + LOCK_TYPES.join(', '));
+            }
+
+        case 'Boolean':
+            if (value === 'true') {
+                return makeValue(true);
+            } else if (value === 'false') {
+                return makeValue(false);
+            } else {
+                return makeError('Invalid boolean value');
             }
     }
 }
@@ -890,6 +899,28 @@ const orderTypes: OrderType[] = [
                 toAddress: values.jettonMinterAddress,
                 tonAmount: DEFAULT_AMOUNT,
                 body: JettonMinter.updateProtocolFeeMessage(values.newProtocolFee)
+            };
+        }
+    },
+
+    {
+        name: 'Update suspend',
+        fields: {
+            jettonMinterAddress: {
+                name: 'Contract Address',
+                type: 'Address'
+            },
+            isSuspend: {
+                name: 'Suspend',
+                type: 'Boolean'
+            },
+        },
+        check: checkJettonMinterAdmin,
+        makeMessage: async (values): Promise<MakeMessageResult> => {
+            return {
+                toAddress: values.jettonMinterAddress,
+                tonAmount: DEFAULT_AMOUNT,
+                body: JettonMinter.updateSuspendMessage(values.isSuspend)
             };
         }
     },
@@ -1190,6 +1221,11 @@ const renderNewOrderFields = (orderTypeIndex: number): void => {
                     const lockType: LockType = LOCK_TYPES[i] as LockType;
                     html += `<option value="${lockType}">${lockTypeToDescription(lockType)}</option>`;
                 }
+                html += `</select>`
+            } else if (field.type === 'Boolean') {
+                html += `<select id="newOrder_${orderTypeIndex}_${fieldId}">`
+                html += `<option value="true">Yes</option>`;
+                html += `<option value="false">No</option>`;
                 html += `</select>`
             } else {
                 html += `<input id="newOrder_${orderTypeIndex}_${fieldId}">`
