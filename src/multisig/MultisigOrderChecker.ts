@@ -171,6 +171,13 @@ export const checkMultisigOrder = async (
         } catch (e) {
         }
 
+        try {
+            const slice = cell.beginParse();
+            const parsed = JettonMinter.parseUpdateSuspend(slice);
+            return parsed.isSuspend ? 'Suspend contract' : 'Unsuspend contract';
+        } catch (e) {
+        }
+
 
         try {
             const slice = cell.beginParse();
